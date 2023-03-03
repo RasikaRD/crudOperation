@@ -6,9 +6,9 @@
     <div class="row mt-3 ">
         <a href="add"><span class="btn btn-primary  mb-2 h1"><i class="fas fa-plus"></i> TO DO LIST</span></a>
 
-        <div class="container w-75 align-self-center">
+        <div class="container w-75 align-self-center ">
             @foreach ($todos as $todo)
-                <div class="container w-70 m-2 py-2" style="background-color: rgb(187, 187, 187)">
+                <div class="container w-70 m-2 py-2 rounded" style="background-color: rgb(187, 187, 187)">
                     <ol class="list-group">
                         <div>
                             <h4>{{ $todo->title }}</h4>
@@ -18,7 +18,7 @@
 
                         @if (count($todo->todolist))
                             @foreach ($todo->todolist as $todolist)
-                                <table class="table" style="background-color: rgb(128, 128, 128)">
+                                <table class="table rounded" style="background-color: rgb(128, 128, 128)">
 
                                     <tr>
                                         <td class="col-6">

@@ -14,108 +14,88 @@ class TodolistController extends Controller
      */
     public function index()
     {
-        
-        $todos= Todo::latest();
-        return view('index',[
+
+        $todos = Todo::latest();
+        return view('index', [
             'todos' => $todos->get()
         ]);
     }
 
-    public function create($id) 
+    public function create($id)
     {
-        
-        return view('create')->with(compact('id'));
-    } 
+
+        $todo = new Todo();
+        $result = $todo->find($id);
+
+        return view('create', [
+            'todolist' => $result
+        ]);
+    }
 
     /**
      * Store a newly created resource in storage.
      */
 
-    public function store() 
+    public function store(Request $request, $id)
     {
 
-        
-        try {
-            $this->validate(request(), [
-                'contents' => ['required'],
-            ]);
-        } catch (ValidationException $e) {
-        }
-        
-
-        $data = request()->all();
-
-        $todolist = new Todolist();
-        
-        $todolist->contents = $data['contents'];
-        $todolist->save();
-
-        session()->flash('success', 'TODO LIST ADDED');
-
-        return redirect('/');
-
-
-        
-    //     try {
-    //         $this->validate(request(), [
-    //             'contents' => ['required']
-    //         ]);
-    //     }
-    //     catch (ValidationException $e) {
-    //     }
-        
-    //     $todo = $request->id;
-    //     $data = $request->all();
-
-    //     $todolist = new Todolist();
-    //     $todolist->contents = $data['contents'];
-    //     $todolist->todo_id = $todo->id;
-    //     $todolist->save();
-
-        
-    //     session()->flash('success','TODO ADDED');
-    //     return redirect('/');
-    // }
-    }
-
-
-    public function edit($id) 
-    {
-        $todolist = new Todolist();
-        $result = $todolist->find($id);
-
-        return view('edit',[
-            'todolist' =>$result
-        ]);
-          
-            //return array_merge($todolist->toArray(), $data);
-
-    }
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update($id, Request $request)
-    {
-        
         try {
             $this->validate(request(), [
                 'contents' => 'required',
             ]);
         } catch (ValidationException $e) {
         }
-        
+
+        $todo = Todo::find($id);
+
+        if (isset($request['id'])) {
+            $todo->contents = $request['id'];
+        }
+        $data = request()->all();
+
+        $todolist = new Todolist();
+        $todolist->title = $data['title'];
+        $todolist->save();
+
+        session()->flash('success', 'Todo updated successfully');
+
+        return redirect('/');
+    }
+
+
+    public function edit($id)
+    {
+        $todolist = new Todolist();
+        $result = $todolist->find($id);
+
+        return view('edit', [
+            'todolist' => $result
+        ]);
+    }
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update($id, Request $request)
+    {
+
+        try {
+            $this->validate(request(), [
+                'contents' => 'required',
+            ]);
+        } catch (ValidationException $e) {
+        }
+
         $todolist = Todolist::find($id);
 
         if (isset($request['contents'])) {
             $todolist->contents = $request['contents'];
         }
-        
+
         $todolist->update();
 
         session()->flash('success', 'Todo updated successfully');
 
         return redirect('/');
-      
     }
 
     /**
@@ -127,6 +107,4 @@ class TodolistController extends Controller
         $todolist->delete();
         return redirect('/');
     }
-
-
 }

@@ -15,7 +15,7 @@
 
 <body>
 
-    <nav class="navbar navbar-light bg-light">
+    <nav class="navbar navbar-light bg-dark">
         <div class="container mb-0 h1">
             <a href="/"><span class="btn btn-primary  mb-2 h1"> TO DO LIST</span></a>
         </div>
