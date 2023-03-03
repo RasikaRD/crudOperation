@@ -79,11 +79,13 @@ class TodolistController extends Controller
     }
 
 
-    public function edit(Todolist $todolist) 
+    public function edit($id) 
     {
-        $todolist = Todolist::get();
+        $todolist = new Todolist();
+        $result = $todolist->find($id);
+
         return view('edit',[
-            'todolist' => $todolist->get()
+            'todolist' =>$result
         ]);
           
             //return array_merge($todolist->toArray(), $data);
@@ -92,19 +94,23 @@ class TodolistController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(array $data, $id)
+    public function update($id, Request $request)
     {
+        
         try {
             $this->validate(request(), [
-                'contents' => ['required'],
-           
+                'contents' => 'required',
             ]);
         } catch (ValidationException $e) {
         }
-        $todolist = $this->find($id);
-        $todolist->update($this->edit($todolist, $data));
-        // $todolist->contents = $data['contents'];
-        // $todolist->update();
+        
+        $todolist = Todolist::find($id);
+
+        if (isset($request['contents'])) {
+            $todolist->contents = $request['contents'];
+        }
+        
+        $todolist->update();
 
         session()->flash('success', 'Todo updated successfully');
 

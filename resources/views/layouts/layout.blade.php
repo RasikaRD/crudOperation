@@ -18,7 +18,6 @@
     <nav class="navbar navbar-light bg-light">
         <div class="container mb-0 h1">
             <a href="/"><span class="btn btn-primary  mb-2 h1"> TO DO LIST</span></a>
-            <a href="add"><span class="btn btn-primary  mb-2 h1"><i class="fas fa-plus"></i> TO DO LIST</span></a>
         </div>
     </nav>
 

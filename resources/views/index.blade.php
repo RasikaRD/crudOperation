@@ -4,13 +4,15 @@
 @endsection
 @section('content')
     <div class="row mt-3 ">
+        <a href="add"><span class="btn btn-primary  mb-2 h1"><i class="fas fa-plus"></i> TO DO LIST</span></a>
+
         <div class="container w-75 align-self-center">
             @foreach ($todos as $todo)
                 <div class="container w-70 m-2 py-2" style="background-color: rgb(187, 187, 187)">
                     <ol class="list-group">
                         <div>
                             <h4>{{ $todo->title }}</h4>
-                            <a href="/create/{{ $todo->id }}"><span class="btn btn-primary mb-2 h1"><i class="fas fa-plus"></i> TO DO</span></a>
+                            <a href="/create/{{$todo->id}}"><span class="btn btn-primary mb-2 h1"><i class="fas fa-plus"></i> TO DO</span></a>
                             <hr>
                         </div>
 
@@ -23,11 +25,11 @@
                                             <b>{{ $todolist->contents }}</b>
                                         </td>
                                         <td class="col-3">
-                                            <a href="/edit/{{ $todolist->id }}"><span class="btn btn-primary"><i
+                                            <a href="/edit/{{$todolist->id}}"><span class="btn btn-primary"><i
                                                         class="fas fa-pencil"></i></span></a>
                                         </td>
                                         <td class="col-3">
-                                            <a href="/delete/{{ $todolist->id }}"><span class="btn btn-danger"><i
+                                            <a href="/delete/{{$todolist->id}}"><span class="btn btn-danger"><i
                                                         class="fas fa-trash"></i></span></a>
                                         </td>
 
