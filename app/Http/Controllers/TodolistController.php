@@ -26,7 +26,6 @@ class TodolistController extends Controller
 
         $todo = new Todo();
         $result = $todo->find($id);
-
         return view('create', [
             'todolist' => $result
         ]);
@@ -36,7 +35,7 @@ class TodolistController extends Controller
      * Store a newly created resource in storage.
      */
 
-    public function store(Request $request, $id)
+    public function store($id,Request $request)
     {
 
         try {
@@ -46,18 +45,20 @@ class TodolistController extends Controller
         } catch (ValidationException $e) {
         }
 
-        $todo = Todo::find($id);
-
+        $todo = Todo::get($id);
+        
+        dd($todo);
         if (isset($request['id'])) {
-            $todo->contents = $request['id'];
+            $todo->id = $request['id'];
         }
         $data = request()->all();
 
         $todolist = new Todolist();
-        $todolist->title = $data['title'];
+        $todolist->contents = $data['contents'];
+        $todolist->todo_id = $todo;
         $todolist->save();
 
-        session()->flash('success', 'Todo updated successfully');
+        session()->flash('success', 'Todo created successfully');
 
         return redirect('/');
     }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\TodolistController;
+use App\Http\Controllers\RegisterController;
 use App\Models\Todolist;
 use Illuminate\Support\Facades\Route;
 
@@ -23,7 +24,7 @@ Route::get('/', [TodolistController::class, 'index'])
 
 Route::get('/create/{todo}', [TodolistController::class, 'create']);
 
-Route::post('/store', [TodolistController::class, 'store']);
+Route::post('/create/{todo_id}', [TodolistController::class, 'store']);
 
 Route::get('/edit/{todolist}', [TodolistController::class, 'edit']);
 
@@ -39,3 +40,8 @@ Route::get('/add', [TodoController::class,'add']);
 Route::post('/todo', [TodoController::class,'store']);
 
 Route::get('/remove/{todo}', [TodoController::class, 'remove']);
+
+// Register Controller
+
+Route::get('/register', [RegisterController::class,'register']);
+Route::post('/register', [RegisterController::class,'store']);
