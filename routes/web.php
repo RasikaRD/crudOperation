@@ -3,6 +3,7 @@
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\TodolistController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\SessionController;
 use App\Models\Todolist;
 use Illuminate\Support\Facades\Route;
 
@@ -22,9 +23,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [TodolistController::class, 'index'])
 ->name('index');
 
-Route::get('/create/{todo}', [TodolistController::class, 'create']);
+Route::get('/create/{id}', [TodolistController::class, 'create'])
+->name('index.create');
 
-Route::post('/create/{todo_id}', [TodolistController::class, 'store']);
+Route::post('/create/{id}/store', [TodolistController::class, 'store']);
 
 Route::get('/edit/{todolist}', [TodolistController::class, 'edit']);
 
@@ -43,5 +45,12 @@ Route::get('/remove/{todo}', [TodoController::class, 'remove']);
 
 // Register Controller
 
-Route::get('/register', [RegisterController::class,'register']);
-Route::post('/register', [RegisterController::class,'store']);
+Route::get('/register', [RegisterController::class,'register'])->middleware('guest');
+Route::post('/register', [RegisterController::class,'store'])->middleware('guest');
+
+
+//log in/log out
+
+Route::get('/login', [SessionController::class, 'create'])->middleware('guest');
+Route::post('/session', [SessionController::class, 'store'])->middleware('guest');
+Route::post('/logout', [SessionController::class, 'destroy'])->middleware('auth');

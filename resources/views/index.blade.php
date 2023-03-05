@@ -14,7 +14,7 @@
                         <ol class="list-group">
                             <div>
                                 <h4>{{ $todo->title }}</h4>
-                                <a href="/create/{{ $todo->id }}"><span class="btn btn-primary mb-2 h1"><i
+                                <a href="{{ route('index.create', $todo->id) }}"><span class="btn btn-primary mb-2 h1"><i
                                             class="fas fa-plus"></i> TO DO</span></a>
                                 <hr>
                             </div>

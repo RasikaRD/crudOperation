@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('contents');
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();
+            $table->foreign('todo_id')
+                ->references('id')
+                ->on('todos')
+                ->onDelete('cascade');
         });
     }
 

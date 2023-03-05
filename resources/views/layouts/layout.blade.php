@@ -20,9 +20,23 @@
 <body>
 
     <nav class="navbar navbar-light bg-dark">
-        <div class="container mb-0 h1">
-            <a href="/"><span class="btn btn-primary  mb-2 h1"> TO DO LIST</span></a>
-            <a href="register"><span class="btn btn-primary  mb-2 h1">REGISTER</span></a>
+        <div class="container mb-0 h1 align-self-center">
+            <a href="/"><span class="btn btn-primary  mb-2 ml-2"> TO DO LIST</span></a>
+            <div class="flex align-self-center">
+                @auth
+                    <span class="text-gray-100 text-base font-bold uppercase py-3 px-5 ml-3"> Welcome, {{ auth()->user()->name }}</span>
+                    <form action="/logout" method="POST" >
+                        @csrf
+                        <button type="submit" class="btn btn-info  mb-2 ml-2">LOG OUT</button>
+                    </form>
+                    @else
+                    <a href="/register"><span class="btn btn-primary  mb-2 ml-2">REGISTER</span></a>
+                    <a href="/login"><span class="btn btn-info  mb-2 ml-2">LOG IN</span></a>
+                    
+                    @endauth
+            
+                <
+            </div>
         </div>
     </nav>
 

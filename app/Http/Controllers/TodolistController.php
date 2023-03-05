@@ -21,14 +21,15 @@ class TodolistController extends Controller
         ]);
     }
 
-    public function create($id)
+    public function create($id, Request $request)
     {
-
+        //$response['tasks'] = Todo::get($request['id']);
         $todo = new Todo();
         $result = $todo->find($id);
-        return view('create', [
+        return view('create',[
             'todolist' => $result
         ]);
+        
     }
 
     /**
@@ -37,25 +38,22 @@ class TodolistController extends Controller
 
     public function store($id,Request $request)
     {
-
+        $todo_id = Todo::get()->pluck('id')->first();
+       
         try {
             $this->validate(request(), [
                 'contents' => 'required',
+                
             ]);
         } catch (ValidationException $e) {
         }
-
-        $todo = Todo::get($id);
-        
-        dd($todo);
-        if (isset($request['id'])) {
-            $todo->id = $request['id'];
-        }
+      
+       
         $data = request()->all();
-
+       
         $todolist = new Todolist();
         $todolist->contents = $data['contents'];
-        $todolist->todo_id = $todo;
+        $todolist->todo_id = $todo_id;
         $todolist->save();
 
         session()->flash('success', 'Todo created successfully');

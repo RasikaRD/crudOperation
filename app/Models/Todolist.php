@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Todolist extends Model
 {
     use HasFactory;
-    protected $fillable = ['contents'];
+    protected $fillable = ['contents', 'todo_id'];
     public function validationRules(){
         return ['contents' =>  'required'];
     }
