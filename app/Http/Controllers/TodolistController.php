@@ -21,14 +21,14 @@ class TodolistController extends Controller
         ]);
     }
 
-    public function create($id, Request $request)
+    public function create($id)
     {
-        //$response['tasks'] = Todo::get($request['id']);
         $todo = new Todo();
         $result = $todo->find($id);
         return view('create',[
-            'todolist' => $result
+            'todo' => $result
         ]);
+
         
     }
 
@@ -36,10 +36,8 @@ class TodolistController extends Controller
      * Store a newly created resource in storage.
      */
 
-    public function store($id,Request $request)
+    public function store(Request $request)
     {
-        $todo_id = Todo::get()->pluck('id')->first();
-       
         try {
             $this->validate(request(), [
                 'contents' => 'required',
@@ -53,7 +51,7 @@ class TodolistController extends Controller
        
         $todolist = new Todolist();
         $todolist->contents = $data['contents'];
-        $todolist->todo_id = $todo_id;
+        $todolist->todo_id = $data['todo_id'];
         $todolist->save();
 
         session()->flash('success', 'Todo created successfully');

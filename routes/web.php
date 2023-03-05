@@ -26,7 +26,7 @@ Route::get('/', [TodolistController::class, 'index'])
 Route::get('/create/{id}', [TodolistController::class, 'create'])
 ->name('index.create');
 
-Route::post('/create/{id}/store', [TodolistController::class, 'store']);
+Route::post('/create/store', [TodolistController::class, 'store']);
 
 Route::get('/edit/{todolist}', [TodolistController::class, 'edit']);
 
