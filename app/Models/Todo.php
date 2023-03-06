@@ -14,5 +14,9 @@ class Todo extends Model
     public function todolist(){
         return $this->hasMany(Todolist::class);
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class , 'user_id');
+    }
 
 }

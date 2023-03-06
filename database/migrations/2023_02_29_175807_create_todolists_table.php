@@ -13,14 +13,12 @@ return new class extends Migration
     {
         Schema::create('todolists', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('todo_id');
+            $table->unsignedBigInteger('todo_id');
             $table->string('contents');
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();
-            $table->foreign('todo_id')
-                ->references('id')
-                ->on('todos')
-                ->onDelete('cascade');
+
+            $table->foreign('todo_id')->references('id')->on('todos')->cascadeOnDelete();
         });
     }
 

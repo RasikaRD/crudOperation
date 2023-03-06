@@ -39,6 +39,7 @@ Register
         <div class="mb-2">
             <input type="submit" class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500" value="Log In">
         </div>
+        <p class="text-gray-600 text-xs mt-2">If you have not an accont, Please Register</p>
 
     </form>
 

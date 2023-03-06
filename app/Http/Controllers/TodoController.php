@@ -21,7 +21,6 @@ class TodoController extends Controller
  
     public function store()
     {
-
         try {
             $this->validate(request(), [
                 'title' => ['required'],
@@ -34,6 +33,9 @@ class TodoController extends Controller
         $todo = new Todo();
         
         $todo->title = $data['title'];
+        $todo->user_id = auth()->user()->id;
+        
+
         $todo->save();
 
         session()->flash('success', 'TODO LIST ADDED');

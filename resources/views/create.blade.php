@@ -7,8 +7,8 @@
         <form action="/create/store" method="post" class="mt-4 p-4">
             @csrf
             <div class="form-group m-3">
-                <h2>{{ $todo->title }}</h2>
-                <label for="contents">Add Todo Name</label>
+                <h2 class="uppercase">{{ $todo->title }}</h2>
+                <label for="contents"><strong> Todo Name</strong></label>
                 <input type="hidden" name="todo_id" value="{{ $todo->id }}">
                 <input type="text" class="form-control mt-3" name="contents">
             </div>
