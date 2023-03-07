@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Todo;
 use App\Models\Todolist;
-use Illuminate\Http\Request;
 use Nette\Schema\ValidationException;
 
 class TodoController extends Controller

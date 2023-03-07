@@ -32,6 +32,9 @@ Route::get('/edit/{todolist}', [TodolistController::class, 'edit']);
 
 Route::post('/update/{id}', [TodolistController::class, 'update']);
 
+Route::get('done/{todolist}', [TodolistController::class, 'done'])
+->name('done');
+
 Route::get('delete/{todolist}', [TodolistController::class, 'delete'])
 ->name('delete');
 

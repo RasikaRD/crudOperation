@@ -3,7 +3,7 @@
     New Todo
 @endsection
 @section('content')
-    <div class="container w-75 align-self-center">
+    <div class="container  align-self-center">
         <form action="/create/store" method="post" class="mt-4 p-4">
             @csrf
             <div class="form-group m-3">

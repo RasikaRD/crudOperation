@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('todo_id');
             $table->string('contents');
+            $table->integer('status')->default(0);
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->nullable();
 

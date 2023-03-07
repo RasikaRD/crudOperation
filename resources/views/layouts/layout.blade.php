@@ -21,7 +21,7 @@
             <a href="/"><span class="btn btn-primary  mb-2 ml-2"> HOME</span></a>
             <div class="flex align-self-center">
                 @auth
-                    <span class="text-gray-100 text-base font-bold uppercase py-3 px-5 ml-3"> Welcome, {{ auth()->user()->name }}</span>
+                    <span class="text-gray-100 text-base font-bold uppercase py-3 px-5 ml-3"> <i class="fa fa-user-circle" aria-hidden="true"></i> {{ auth()->user()->name }}</span>
                     <form action="/logout" method="POST" >
                         @csrf
                         <button type="submit" class="btn btn-info  mb-2 ml-2">LOG OUT</button>

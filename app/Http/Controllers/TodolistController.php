@@ -94,6 +94,13 @@ class TodolistController extends Controller
 
         return redirect('/');
     }
+    public function done(Todolist $todolist)
+    {
+
+        $todolist->status = 1;
+        $todolist->update();
+        return redirect('/');
+    }
 
     /**
      * Remove the specified resource from storage.
