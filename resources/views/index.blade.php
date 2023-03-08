@@ -15,10 +15,10 @@
 
                                 <ol class="list-group">
                                     <div class="flex mt-2">
-                                        <div class="col-9">
+                                        <div class="col-8">
                                             <h4 class="ml-5 mr-5 mt-1 uppercase">{{ $todo->title }}</h4>
                                         </div>
-                                        <div class="col-3 mb-2">
+                                        <div class="col-4 mb-2 ml-1">
                                             <a href="{{ route('index.create', $todo->id) }}"><span
                                                     class="btn btn-primary mb-2 h5 ml-15"><i class="fas fa-plus"></i> TO
                                                     DO</span></a>
