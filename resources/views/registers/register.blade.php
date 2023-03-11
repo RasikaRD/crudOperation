@@ -7,8 +7,9 @@ Register
 
     <h2 class="text-center font-blod text-xl">Register !</h2>
 
-    <form method="post" action="/register" class="mt-5">
+    <form method="post" action="/singup" class="mt-5">
         @csrf
+        @method('POST')
         <div class="mb-2">
             <label class="blcok mb-2 upercase font-bold" for="name">Name</label>
             <input class="border border-gray-400 p-1 w-full rounded" 
@@ -54,7 +55,7 @@ Register
             type="password" 
             name="password"
             id="password"
-            value="{{ old('password') }}" 
+            {{-- value="{{ old('password') }}"  --}}
             required>
             @error('password')
             <p class="text-red-500 text-xs mt-1"> {{ $message }}</p>

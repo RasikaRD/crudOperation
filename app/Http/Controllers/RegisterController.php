@@ -4,22 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Nette\Schema\ValidationException;
 
 class RegisterController extends Controller
 {
-    public function register(){
+    public function register()
+    {
         return view('registers.register');
     }
 
-    public function store(){
-
+    public function store()
+    {
         $attributes = request()->validate([
-            'password' =>'required|min:7|max:10',
-            'name' =>'required|max:256',
-            'username' =>'required|min:3|max:255|unique:users,username',
-            'email' =>'required|email|max:255|unique:users,email'
+            'password' => 'required|min:7|max:15',
+            'name' => 'required|max:256',
+            'username' => 'required|min:3|max:255|unique:users,username',
+            'email' => 'required|email|max:255|unique:users,email'
         ]);
-        
+
         $attributes['password'] = bcrypt($attributes['password']);
 
         $user = User::create($attributes);
@@ -28,6 +30,4 @@ class RegisterController extends Controller
 
         return redirect('/')->with('success', 'Account has been registered');
     }
-
-  
 }

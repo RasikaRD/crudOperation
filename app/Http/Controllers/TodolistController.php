@@ -14,22 +14,18 @@ class TodolistController extends Controller
      */
     public function index()
     {
-
-        $todos = Todo::latest();
-        return view('index', [
-            'todos' => $todos->get()
-        ]);
+        $todos = Todo::latest()->get();
+        return view('index', compact('todos'));
     }
 
     public function create($id)
     {
+       
         $todo = new Todo();
         $result = $todo->find($id);
         return view('create',[
             'todo' => $result
-        ]);
-
-        
+        ]);      
     }
 
     /**
@@ -40,7 +36,7 @@ class TodolistController extends Controller
     {
         try {
             $this->validate(request(), [
-                'contents' => 'required',
+                'contents' => 'required|min:3|max:255',
                 
             ]);
         } catch (ValidationException $e) {
@@ -109,6 +105,7 @@ class TodolistController extends Controller
     {
 
         $todolist->delete();
+        session()->flash('Deleted!', 'TODO LIST DELETED');
         return redirect('/');
     }
 }

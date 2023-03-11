@@ -35,8 +35,7 @@ Route::post('/update/{id}', [TodolistController::class, 'update']);
 Route::get('done/{todolist}', [TodolistController::class, 'done'])
 ->name('done');
 
-Route::get('delete/{todolist}', [TodolistController::class, 'delete'])
-->name('delete');
+Route::delete('/delete/{todolist}', [TodolistController::class, 'delete'])->middleware('auth');
 
 /* Todo Route*/
 
@@ -44,12 +43,12 @@ Route::get('/add', [TodoController::class,'add']);
 
 Route::post('/todo', [TodoController::class,'store']);
 
-Route::get('/remove/{todo}', [TodoController::class, 'remove']);
+Route::delete('/remove/{todo}', [TodoController::class, 'destroy'])->middleware('auth');
 
 // Register Controller
 
 Route::get('/register', [RegisterController::class,'register'])->middleware('guest');
-Route::post('/register', [RegisterController::class,'store'])->middleware('guest');
+Route::post('/singup', [RegisterController::class,'store'])->middleware('guest');
 
 
 //log in/log out

@@ -8,7 +8,8 @@ Register
     <h2 class="text-center font-blod text-xl">Log in !</h2>
 
     <form method="POST" action="/session" class="mt-5">
-        @csrf
+        {{ csrf_field() }}
+        {{ method_field('POST') }}
 
         <div class="mb-2">
             <label class="blcok mb-2 upercase font-bold" for="username">Username</label>

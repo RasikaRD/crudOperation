@@ -15,16 +15,21 @@
 
                                 <ol class="list-group">
                                     <div class="flex mt-2">
-                                        <div class="col-8">
+                                        <div class="col-10">
                                             <h4 class="ml-5 mr-5 mt-1 uppercase">{{ $todo->title }}</h4>
-                                        </div>
-                                        <div class="col-4 mb-2 ml-1">
                                             <a href="{{ route('index.create', $todo->id) }}"><span
-                                                    class="btn btn-primary mb-2 h5 ml-15"><i class="fas fa-plus"></i> TO
+                                                    class="btn btn-primary btn-sm mb-2 h5 ml-4"><i class="fas fa-plus"></i> TO
                                                     DO</span></a>
-
-                                            <a href="/remove/{{ $todo->id }}"><span class="btn btn-danger mb-2 h1 ml-1"><i
-                                                        class="fas fa-trash"></i></span></a>
+                                        </div>
+                                        <div class="col-2 mb-3 ml-1">
+                                            <div>
+                                                <form method="post" action="/remove/{{ $todo->id }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-danger btn-sm mt-1 ml-1" type="submit"> Delete To Do
+                                                        List </button>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -39,23 +44,30 @@
                                                     </td>
                                                     <td class="col-2 ">
                                                         @if ($todolist->status == 0)
-                                                        <span class="badge bg-warning text-dark mt-2">Not Completed</span>
-                                                        <a href="/done/{{ $todolist->id }}"><span class="btn btn-warning btn-sm mb-1 ">
-                                                            <i class="fas fa-check"></i></span></a>
+                                                            <span class="badge bg-warning text-dark mt-2">Not Completed</span>
+                                                            <a href="/done/{{ $todolist->id }}"><span
+                                                                    class="btn btn-warning btn-sm ">
+                                                                    <i class="fas fa-check "></i></span></a>
                                                         @else
-                                                        <span class="badge bg-success mt-2">Completed <i class="fa fa-check-square" aria-hidden="true"></i></span> 
-
+                                                            <span class="badge bg-success mt-2">Completed <i
+                                                                    class="fa fa-check-square " aria-hidden="true"></i></span>
                                                         @endif
-                                                   
 
                                                     </td>
                                                     <td class="col-1">
-                                                        <a href="/edit/{{ $todolist->id }}"><span class="btn btn-primary btn-sm"><i
+                                                        <a href="/edit/{{ $todolist->id }}"><span
+                                                                class="btn btn-primary mt-1 btn-sm"><i
                                                                     class="fas fa-pencil"></i></span></a>
                                                     </td>
                                                     <td class="col-1">
-                                                        <a href="/delete/{{ $todolist->id }}"><span class="btn btn-danger btn-sm"><i
-                                                                    class="fas fa-trash"></i></span></a>
+                                                        <form method="post" action="/delete/{{ $todolist->id }}">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button class="btn btn-danger mt-1 ml-1 btn-sm" type="submit">
+                                                                <i class="fas fa-trash"></i> </button>
+                                                        </form>
+                                                        {{-- <a href="/delete/{{ $todolist->id }}"><span
+                                                                class="btn btn-danger btn-sm"></span></a> --}}
                                                     </td>
 
                                             </table>

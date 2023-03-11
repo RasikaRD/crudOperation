@@ -22,7 +22,7 @@ class TodoController extends Controller
     {
         try {
             $this->validate(request(), [
-                'title' => ['required'],
+                'title' => 'required|min:3|max:255',
             ]);
         } catch (ValidationException $e) {
         }
@@ -43,10 +43,11 @@ class TodoController extends Controller
     }
 
 
-    public function remove(Todo $todo, Todolist $todolist)
+    public function destroy(Todo $todo)
     {
+        // $this->authorize('delete', $todo);
         $todo->delete();
-        $todolist->delete();
+        session()->flash('Deleted!', 'TODO LIST DELETED');
         return redirect('/');
     }
 }
