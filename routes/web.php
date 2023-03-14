@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\TodolistController;
 use App\Http\Controllers\RegisterController;
@@ -56,3 +57,8 @@ Route::post('/singup', [RegisterController::class,'store'])->middleware('guest')
 Route::get('/login/', [SessionController::class, 'create'])->middleware('guest');
 Route::post('/session', [SessionController::class, 'store'])->middleware('guest');
 Route::post('/logout', [SessionController::class, 'destroy'])->middleware('auth');
+
+//admin routes
+
+Route::get('/admin/todos', [AdminController::class, 'add'])->middleware('admin');
+Route::post('/admin/todos/add', [AdminController::class, 'post'])->middleware('admin');

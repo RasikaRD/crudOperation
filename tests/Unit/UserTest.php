@@ -50,6 +50,35 @@ class UserTest extends TestCase
         $response = $this->from('/registers.register')->post('/singup',$user);
         $response->assertRedirect('/registers.register');
         $this->assertDatabaseMissing('users',$user);
+        $response->assertStatus(302);
+    }
+
+    public function test_register_with_maximum_password()
+    {
+        $user = [
+            'name' => 'Rasika',
+            'username' => 'Rasika',
+            'email' => 'rasika@gmail.com',
+            'password' =>  '1234567891234567',
+        ];
+        $response = $this->from('/registers.register')->post('/singup',$user);
+        $response->assertRedirect('/registers.register');
+        $this->assertDatabaseMissing('users',$user);
+        $response->assertStatus(302);
+    }
+
+    public function test_register_with_incorrect_email()
+    {
+        $user = [
+            'name' => 'Rasika',
+            'username' => 'Rasika',
+            'email' => 'rasika',
+            'password' =>  '123456789',
+        ];
+        $response = $this->from('/registers.register')->post('/singup',$user);
+        $response->assertRedirect('/registers.register');
+        $this->assertDatabaseMissing('users',$user);
+        $response->assertStatus(302);
     }
 
     public function test_user_cant_duplicate_register()
@@ -84,12 +113,12 @@ class UserTest extends TestCase
         $response->assertViewIs('session.login');
     }
 
-    //check dub
     public function test_user_login_successfully()
     {
         $user = User::factory()->create();
         $response = $this->post('/session',$user->toArray());
         $response->assertRedirect('/');
+        
     }
 
     public function test_user_login_with_correct_credentials()

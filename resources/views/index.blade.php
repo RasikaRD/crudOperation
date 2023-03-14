@@ -4,8 +4,13 @@
 @endsection
 @section('content')
     <div class="row mt-3 mb-1 ">
+        @can('admin')
+        <div class="container col-8 mt-4 border-1 bg-gray-300 rounded-xl">
+            <h2 class="text-center mt-3 p-2">Admin section</h2><hr>
+        </div>
+        @endcan
         @auth
-            <a href="add"><span class="btn btn-primary  mb-2 h1 ml-10"><i class="fas fa-plus"></i> TO DO LIST </span></a>
+            <a href="add"><span class="btn btn-primary  mb-2 h1 ml-5 "><i class="fas fa-plus"></i> TO DO LIST </span></a>
 
             <div class="container align-self-center ">
                 @if (count($todos))
@@ -99,6 +104,8 @@
             @else
                 <div class="alert alert-success   mt-4 align-self-center text-center">Please Log In Now!</div>
             @endauth
+
+           
         </div>
     </div>
 @endsection

@@ -6,6 +6,7 @@ use App\Models\Todo;
 use App\Models\Todolist;
 use Illuminate\Http\Request;
 use Nette\Schema\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 
 class TodolistController extends Controller
 {
@@ -14,18 +15,19 @@ class TodolistController extends Controller
      */
     public function index()
     {
+        // $this ->authorize('admin');
         $todos = Todo::latest()->get();
         return view('index', compact('todos'));
     }
 
     public function create($id)
     {
-       
+
         $todo = new Todo();
         $result = $todo->find($id);
-        return view('create',[
+        return view('create', [
             'todo' => $result
-        ]);      
+        ]);
     }
 
     /**
@@ -37,14 +39,14 @@ class TodolistController extends Controller
         try {
             $this->validate(request(), [
                 'contents' => 'required|min:3|max:255',
-                
+
             ]);
         } catch (ValidationException $e) {
         }
-      
-       
+
+
         $data = request()->all();
-       
+
         $todolist = new Todolist();
         $todolist->contents = $data['contents'];
         $todolist->todo_id = $data['todo_id'];
@@ -108,4 +110,6 @@ class TodolistController extends Controller
         session()->flash('Deleted!', 'TODO LIST DELETED');
         return redirect('/');
     }
+
+
 }
