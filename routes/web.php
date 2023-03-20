@@ -25,24 +25,24 @@ Route::get('/', [TodolistController::class, 'index'])
 ->name('index');
 
 Route::get('/create/{id}', [TodolistController::class, 'create'])
-->name('index.create');
+->name('index.create')->middleware('auth');
 
-Route::post('/create/store', [TodolistController::class, 'store']);
+Route::post('/create/store', [TodolistController::class, 'store'])->middleware('auth');
 
-Route::get('/edit/{todolist}', [TodolistController::class, 'edit']);
+Route::get('/edit/{todolist}', [TodolistController::class, 'edit'])->middleware('auth');
 
-Route::post('/update/{id}', [TodolistController::class, 'update']);
+Route::post('/update/{id}', [TodolistController::class, 'update'])->middleware('auth');
 
 Route::get('done/{todolist}', [TodolistController::class, 'done'])
-->name('done');
+->name('done')->middleware('auth');
 
 Route::delete('/delete/{todolist}', [TodolistController::class, 'delete'])->middleware('auth');
 
 /* Todo Route*/
 
-Route::get('/add', [TodoController::class,'add']);
+Route::get('/add', [TodoController::class,'add'])->middleware('auth');
 
-Route::post('/todo', [TodoController::class,'store']);
+Route::post('/todo', [TodoController::class,'store'])->middleware('auth');
 
 Route::delete('/remove/{todo}', [TodoController::class, 'destroy'])->middleware('auth');
 

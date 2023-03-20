@@ -4,8 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Todo;
 use App\Models\Todolist;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Nette\Schema\ValidationException;
+use Spatie\FlareClient\Http\Response as HttpResponse;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Symfony\Component\HttpFoundation\Response;
 
 class TodolistController extends Controller
@@ -15,25 +20,83 @@ class TodolistController extends Controller
      */
     public function index()
     {
-        // $this ->authorize('admin');
-        $todos = Todo::latest()->get();
+        
+        $todos = Todo::where('user_id', auth()->id())->get();
         return view('index', compact('todos'));
     }
 
     public function create($id)
     {
+        // Role::create(['name' => 'admin']);
+        // Role::create(['name' => 'sub_admin']);
+        // Role::create(['name' => 'user']);
 
-        $todo = new Todo();
-        $result = $todo->find($id);
+        // Permission::create(['name' => 'view_todo']);
+        // Permission::create(['name' => 'add_todo']);
+        // Permission::create(['name' => 'delete_todo']);
+        // Permission::create(['name' => 'view_sub_todo']);
+        // Permission::create(['name' => 'add_sub_todo']);
+
+
+        //$admin->givePermissionTo('view_todo');
+        // $admin->givePermissionTo('add_todo');
+        // $admin->givePermissionTo('delete_todo');
+        // $admin->givePermissionTo('view_sub_todo');
+        // $admin->givePermissionTo('add_sub_todo');
+
+        // $sub_admin->givePermissionTo('view_todo');
+        // $sub_admin->givePermissionTo('add_todo');
+        // $sub_admin->givePermissionTo('view_sub_todo');
+        // $sub_admin->givePermissionTo('add_sub_todo');
+
+        // $user->givePermissionTo('view_todo');
+        // $user->givePermissionTo('view_sub_todo');
+
+        //     $admin = User::find(2);
+        //     $sub_admin = User::find(3);
+        //     $user = User::find(1);
+
+        //     $admin->assignRole('admin');
+        //     $sub_admin->assignRole('sub_admin');
+        //     $user->assignRole('user');
+
+
+        //    $role_admin = Role::where('name', 'admin')->first();
+        //    $role_sub_admin = Role::where('name', 'sub_admin')->first();
+        //    $role_user = Role::where('name', 'user')->first();
+
+        //    $role_admin->assignPermission('view_todo');
+        //    $role_admin->assignPermission('add_todo');
+        //    $role_admin->assignPermission('delete_todo');
+        //    $role_admin->assignPermission('view_sub_todo');
+        //    $role_admin->assignPermission('add_sub_todo');
+
+        //    $role_sub_admin->assignPermission('view_todo');
+        //    $role_sub_admin->assignPermission('add_todo');
+        //    $role_sub_admin->assignPermission('view_sub_todo');
+        //    $role_sub_admin->assignPermission('add_sub_todo');
+
+        //    $role_user->assignPermission('view_todo');
+        //    $role_user->assignPermission('view_sub_todo');
+
+        // if (Auth::guest()) {
+        //     return redirect('/');
+        // }
+        // $todo = new Todo();
+        // $result = $todo->find($id);
+        if(
+        $result = Todo::where('user_id', auth()->id())->find($id)){
         return view('create', [
             'todo' => $result
-        ]);
+        ]);}
+        else{
+            abort(Response::HTTP_FORBIDDEN);
+        }
     }
 
     /**
      * Store a newly created resource in storage.
      */
-
     public function store(Request $request)
     {
         try {
@@ -50,6 +113,7 @@ class TodolistController extends Controller
         $todolist = new Todolist();
         $todolist->contents = $data['contents'];
         $todolist->todo_id = $data['todo_id'];
+        $todolist->user_id =auth()->user()->id;
         $todolist->save();
 
         session()->flash('success', 'Todo created successfully');
@@ -60,12 +124,21 @@ class TodolistController extends Controller
 
     public function edit($id)
     {
-        $todolist = new Todolist();
-        $result = $todolist->find($id);
+        if(
+            $result = Todolist::where('user_id', auth()->id())->find($id)){
+            return view('edit', [
+                'todolist' => $result
+            ]);}
+            else{
+                abort(Response::HTTP_FORBIDDEN);
+            }
+        // $todolist = new Todolist();
+        // $result = $todolist->find($id);
+        // return view('edit', [
+        //     'todolist' => $result
+        // ]);
 
-        return view('edit', [
-            'todolist' => $result
-        ]);
+        
     }
     /**
      * Update the specified resource in storage.
@@ -110,6 +183,4 @@ class TodolistController extends Controller
         session()->flash('Deleted!', 'TODO LIST DELETED');
         return redirect('/');
     }
-
-
 }

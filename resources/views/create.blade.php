@@ -4,6 +4,7 @@
 @endsection
 @section('content')
     @auth
+   
         <div class="container  align-self-center">
             <form action="/create/store" method="post" class="mt-4 p-4">
                 @csrf
@@ -23,5 +24,6 @@
         </div>
         </form>
         </div>
+        
     @endauth
 @endsection

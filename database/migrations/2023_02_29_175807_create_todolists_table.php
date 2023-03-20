@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('todolists', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('todo_id');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('contents');
             $table->integer('status')->default(0);
             $table->timestamp('created_at');
