@@ -28,7 +28,9 @@ class NewUserWelcomeMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New User Welcome Mail',
+            subject:'New User Welcome Mail',
+            to: $this->user->email,
+
         );
     }
 
@@ -38,7 +40,7 @@ class NewUserWelcomeMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.welcome_email',
         );
     }
 
@@ -52,24 +54,5 @@ class NewUserWelcomeMail extends Mailable
         return [];
     }
 
-    public function build(){
-
-        $subscriber = [
-            'email_address' => $this->user->email,
-            'status' => 'subscribed',
-            'merge_fields' => [
-                'FNAME' => $this->user->name,
-            ],
-        ];
-
-        $data_center = config('services.mailchimp.dc');
-        $list_id = config('services.mailchimp.list_id');
-
-        // $response = Mailchimp::post("lists/$list_id/members", $subscriber);
-
-       
-        return $this->subject('Welcome to Our TODO LIST App!')
-        ->view('emails.email', 
-        ['user' => $this->user]);
-    }
+   
 }
