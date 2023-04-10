@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 @section('title')
-    Edit Todo
+    Add new TODO
 @endsection
 @section('content')
     @auth

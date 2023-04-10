@@ -62,3 +62,5 @@ Route::post('/logout', [SessionController::class, 'destroy'])->middleware('auth'
 
 Route::get('/admin/todos', [AdminController::class, 'add'])->middleware('admin');
 Route::post('/admin/todos/add', [AdminController::class, 'post'])->middleware('admin');
+
+Route::get('/admin/notification', [AdminController::class, 'get'])->middleware('admin');

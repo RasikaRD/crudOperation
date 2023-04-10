@@ -2,9 +2,11 @@
 <html lang="en">
 
 <head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>
         @yield('title')
     </title>
+
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
@@ -12,11 +14,26 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    {{-- Scripts --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
         integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous">
     </script>
-
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <script>
+        window.Laravel = {!! json_encode([
+            'csrfToken' => ('csrf_token')(),
+        ]) !!};
+    </script>
+
+    @can('admin')
+        @vite('resources/js/app.js')
+        {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
+        {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
+    @endcan
+
 </head>
 
 <body>
@@ -29,7 +46,40 @@
                     {{-- <span class="text-gray-100 text-base font-bold uppercase py-3 px-5 ml-3">
                         <i class="fa fa-user-circle" aria-hidden="true"></i> {{ auth()->user()->name }}</span> --}}
 
+                    @can('admin')
+                        <!-- Notifications -->
+                        <div class="dropdown" id="app">
+                            <button class="btn btn-secondary dropdown-toggle  mb-1 mr-2 " type="button"
+                                id="dropdownMenuButton2" data-bs-toggle="dropdown" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="fas fa-bell"></i>
+                                @if (count(auth()->user()->unreadNotifications) == 0)
+                                    <span class="badge rounded-pill badge-notification bg-danger ml-1 " id="count"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+                                <li><a class="dropdown-item" href="#" id="notificationName">No unread notifications</a>
+                                </li>
+                                @endif
 
+                                @if (count(auth()->user()->unreadNotifications) > 0)
+                                    <span class="badge rounded-pill badge-notification bg-danger ml-1 "
+                                        id="count">{{ count(auth()->user()->unreadNotifications) }}</span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+                                        <li><a class="dropdown-item" href="#">
+
+                                                @foreach (auth()->user()->unreadNotifications as $notification)
+                                        <li><a class="dropdown-item" href="/admin/notification" id="notification">
+                                                <span id="notificationMessage">"{{ $notification->data['message'] }}"</span>
+                                                added by <span
+                                                    id="notificationName">{{ $notification->data['username'] }}</span>
+                                            </a></li>
+                                @endforeach
+                                </a></li>
+                            </ul>
+                            @endif
+                        </div>
+                    @endcan
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle mb-1" type="button" id="dropdownMenuButton1"
                             data-bs-toggle="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -40,7 +90,6 @@
                                 <li><a class="dropdown-item" href="/admin/todos">Admin</a></li>
                             </ul>
                         @endcan
-                        
                     </div>
 
                     <form action="/logout" method="POST">
@@ -63,6 +112,32 @@
         @endif
         @yield('content')
     </div>
+
+    {{-- script for notification --}}
+    @can('admin')
+        <script type="module">
+        
+        let notificationCount = {{ count(auth()->user()->unreadNotifications) }};
+        window.Echo.private('App.Models.User.' + {{ auth()->user()->id }})
+            .notification((notification) => {
+                notificationCount++;
+                document.getElementById('count').textContent = notificationCount;
+                console.log(notification.type); 
+                console.log(notificationCount);
+
+                 // Display the notification message
+                 if(notificationCount > 0){
+                let notificationMessage = notification.message;
+                let notificationUsername = notification.username;
+                document.getElementById('notificationName').textContent = notificationUsername;
+                document.getElementById('notificationMessage').textContent = notificationMessage;
+            }
+            });
+            
+    </script>
+    @endcan
+    {{-- End Notification script --}}
+
 </body>
 
 </html>

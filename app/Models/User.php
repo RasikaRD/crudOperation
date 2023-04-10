@@ -3,7 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -53,4 +56,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(Todolist::class);
     }
+
+    /**
+     * Get the channel name for the broadcast notifications.
+     *
+     * @return string
+     */
+
+    // public function receivesBroadcastNotificationsOn(): string
+    // {
+    //     return 'newnotification';
+    // }
+
 }
+
+
+

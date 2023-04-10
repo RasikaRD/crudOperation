@@ -48,4 +48,12 @@ class AdminController extends Controller
         return redirect('/');
 
     }
+
+    public function get(){
+
+        $admin = User::where('username', 'admins')->first();
+     
+        $admin->unreadNotifications->markAsRead();
+        return redirect()->back();
+    }
 }
