@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\ApiTodoController;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\TodolistController;
 use App\Http\Controllers\RegisterController;
@@ -17,24 +19,15 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function () {
+    Route::post('/addtodolist', [ApiTodoController::class,'store'])->name('add.todo');
+    Route::get('/alltodolist', [ApiTodoController::class,'index'])->name('list.todo');
+    Route::delete('/todos/{id}', [ApiTodoController::class, 'destroy'])->name('delete.todo');
+    Route::post('/update/{id}', [ApiTodoController::class, 'update'])->name('update.todo');
 });
 
 
-
-Route::post('/todo', [TodoController::class,'store'])->name('todo.store');
-
-Route::get('/register', [RegisterController::class,'register'])->middleware('guest');
-
-Route::post('/singup', [RegisterController::class,'store'])->middleware('guest');
-
-Route::post('/session', [SessionController::class, 'store'])->middleware('guest');
-
-Route::delete('/delete/{todolist}', [TodolistController::class, 'delete'])->middleware('auth');
-
-Route::post('/update/{id}', [TodolistController::class, 'update']);
-
-Route::delete('/remove/{todo}', [TodoController::class, 'destroy'])->middleware('auth');
-
+// Route::get('/alltodolist', [ApiTodoController::class,'index'])->name('list.todo');
