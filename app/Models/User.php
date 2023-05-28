@@ -9,13 +9,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, Notifiable;
     use HasRoles;
+    use HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -55,6 +56,11 @@ class User extends Authenticatable
     public function todolist()
     {
         return $this->hasMany(Todolist::class);
+    }
+
+    public function collaborator()
+    {
+        return $this->belongsToMany(Collaborator::class, 'collaborators', 'user_id', 'todo_id');
     }
 
     /**

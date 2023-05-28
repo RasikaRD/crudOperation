@@ -3,11 +3,13 @@
     First Project
 @endsection
 @section('content')
+
     <div class="row mt-3 mb-1 ">
         @can('admin')
-        <div class="container col-8 mt-4 border-1 bg-gray-300 rounded-xl">
-            <h2 class="text-center mt-3 p-2">Admin section</h2><hr>
-        </div>
+            <div class="container col-8 mt-4 border-1 bg-gray-300 rounded-xl">
+                <h2 class="text-center mt-3 p-2">Admin section</h2>
+                <hr>
+            </div>
         @endcan
         @auth
             <a href="add"><span class="btn btn-primary  mb-2 h1 ml-5 "><i class="fas fa-plus"></i> TO DO LIST </span></a>
@@ -22,9 +24,22 @@
                                     <div class="flex mt-2">
                                         <div class="col-10">
                                             <h4 class="ml-5 mr-5 mt-1 uppercase">{{ $todo->title }}</h4>
+                                            <div class="container mt-2 mb-3 border-2 bg-gray-300 rounded-xl p-2">
+                                                <span class=" border-1 bg-gray-500 rounded-2 p-1 uppercase">
+                                                    <b> Collaborative users :</b></span>  
+                                                    @foreach ($collaborators as $cuser)
+                                                    @if ($todo->id == $cuser->todo_id)
+                                                        <?php $user = App\Models\User::find($cuser->user_id); ?>
+                                                        <span class=" border-1 bg-gray-400 rounded-2 p-1 uppercase">{{ $user->name }}</span>
+                                                    @endif
+                                                    @endforeach
+
+                                            </div>
+
                                             <a href="{{ route('index.create', $todo->id) }}"><span
                                                     class="btn btn-primary btn-sm mb-2 h5 ml-4"><i class="fas fa-plus"></i> TO
                                                     DO</span></a>
+
                                         </div>
                                         <div class="col-2 mb-3 ml-1">
                                             <div>
@@ -105,7 +120,7 @@
                 <div class="alert alert-success   mt-4 align-self-center text-center">Please Log In Now!</div>
             @endauth
 
-           
+
         </div>
     </div>
 @endsection

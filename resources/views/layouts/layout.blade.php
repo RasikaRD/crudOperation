@@ -16,12 +16,15 @@
         integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
     {{-- Scripts --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"
+        integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
         integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous">
     </script>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
+    @vite('resources/js/app.js')
     <script>
         window.Laravel = {!! json_encode([
             'csrfToken' => ('csrf_token')(),
@@ -29,7 +32,7 @@
     </script>
 
     @can('admin')
-        @vite('resources/js/app.js')
+        {{-- @vite('resources/js/app.js') --}}
         {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
         {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
     @endcan
@@ -53,36 +56,40 @@
                                 id="dropdownMenuButton2" data-bs-toggle="dropdown" data-bs-toggle="dropdown"
                                 aria-expanded="false">
                                 <i class="fas fa-bell"></i>
-                                @if (count(auth()->user()->unreadNotifications) == 0)
+                                {{-- @if (count(auth()->user()->unreadNotifications) == 0)
                                     <span class="badge rounded-pill badge-notification bg-danger ml-1 " id="count"></span>
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
-                                <li><a class="dropdown-item" href="#" id="notificationName">No unread notifications</a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2" 
+                            id="notificationArea">
+                                <li><a class="dropdown-item" href="#" id="notification">No notifications!</a>
                                 </li>
-                                @endif
+                                @endif --}}
+                                
+                                <span class="badge rounded-pill badge-notification bg-danger ml-1 "
+                                    id="count">{{ count(auth()->user()->unreadNotifications) }}</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2"
+                                id="notificationArea">
 
                                 @if (count(auth()->user()->unreadNotifications) > 0)
-                                    <span class="badge rounded-pill badge-notification bg-danger ml-1 "
-                                        id="count">{{ count(auth()->user()->unreadNotifications) }}</span>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
-                                        <li><a class="dropdown-item" href="#">
+                                    @foreach (auth()->user()->unreadNotifications as $notification)
+                                        <li><a class="dropdown-item" href="/admin/notification/{{ $notification->id }}"
+                                                id="notification">
+                                                "{{ $notification->data['message'] }}"
+                                                added by {{ $notification->data['username'] }}
 
-                                                @foreach (auth()->user()->unreadNotifications as $notification)
-                                        <li><a class="dropdown-item" href="/admin/notification" id="notification">
-                                                <span id="notificationMessage">"{{ $notification->data['message'] }}"</span>
-                                                added by <span
-                                                    id="notificationName">{{ $notification->data['username'] }}</span>
                                             </a></li>
-                                @endforeach
-                                </a></li>
+                                    @endforeach
+                                @else
+                                    {{-- <li><a class="dropdown-item" id="notification">No notifications!</a></li> --}}
                             </ul>
                             @endif
                         </div>
                     @endcan
+
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle mb-1" type="button" id="dropdownMenuButton1"
-                            data-bs-toggle="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa fa-user-circle" aria-hidden="true"></i> {{ auth()->user()->name }}
                         </button>
                         @can('admin')
@@ -123,15 +130,24 @@
                 notificationCount++;
                 document.getElementById('count').textContent = notificationCount;
                 console.log(notification.type); 
-                console.log(notificationCount);
 
                  // Display the notification message
                  if(notificationCount > 0){
-                let notificationMessage = notification.message;
-                let notificationUsername = notification.username;
-                document.getElementById('notificationName').textContent = notificationUsername;
-                document.getElementById('notificationMessage').textContent = notificationMessage;
-            }
+
+                    let notificationList = document.getElementById("notificationArea");
+                    let li = document.createElement('li');
+                    if(notificationList){
+                        
+                        let a = document.createElement('a');
+                        a.classList.add("dropdown-item");               
+                        a.href = '/admin/notification/' + notification.id;
+                        a.textContent = 'New Notification !';
+                        li.appendChild(a);
+                        notificationList.appendChild(li);
+
+                    }
+     
+                }
             });
             
     </script>

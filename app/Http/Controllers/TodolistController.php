@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Middleware\AdminsOnly;
+use App\Models\Collaborator;
 use App\Models\Todo;
 use App\Models\Todolist;
 use App\Models\User;
@@ -21,9 +22,10 @@ class TodolistController extends Controller
      */
     public function index()
     {
-
-        $todos = Todo::where('user_id', auth()->id())->get();
-        return view('index', compact('todos'));  
+        
+        $todos = Todo::where('user_id', auth()->id())->latest()->get();
+        $collaborators = Collaborator::get();
+        return view('index', compact('todos','collaborators'));  
     }
 
     public function create($id)

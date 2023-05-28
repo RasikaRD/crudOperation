@@ -20,6 +20,10 @@ class Todo extends Model
         return $this->belongsTo(User::class , 'user_id');
     }
 
+    public function collaborators()
+    {
+        return $this->belongsToMany(Collaborator::class, 'collaborators', 'todo_id', 'user_id');
+    }
     
 
 }

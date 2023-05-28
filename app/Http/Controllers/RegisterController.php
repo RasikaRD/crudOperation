@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\approvedtMail;
+use App\Mail\attachmentMail;
 use Mailgun\HttpClient\HttpClientConfigurator;
-
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Nette\Schema\ValidationException;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NewUserWelcomeMail;
+
 use Mailgun\Mailgun;
 
 class RegisterController extends Controller
@@ -31,11 +34,18 @@ class RegisterController extends Controller
         $attributes['password'] = bcrypt($attributes['password']);
 
         $user = User::create($attributes);
-       
-        // Mail::to($request->user())->send(new NewUserWelcomeMail($user));
+
+        Mail::to($request->user())->send(new NewUserWelcomeMail($user));
+        // Mail::to('rasikarajith994@gmail.com')->send(new NewUserWelcomeMail($user));
+        // Mail::to('rasikarajith994@gmail.com')->send(new approvedtMail($user));
 
         auth()->login($user);
 
         return redirect('/')->with('success', 'Account has been registered');
+    }
+
+    public function email()
+    {
+        return view('emails.welcome_email');
     }
 }
