@@ -40,7 +40,7 @@ class NewUserWelcomeMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.welcome_email',
+            view: 'emails.new_welcome',
         );
     }
 
@@ -53,6 +53,7 @@ class NewUserWelcomeMail extends Mailable
     {
         return [];
     }
+
 
    
 }
