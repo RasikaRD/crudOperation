@@ -13,7 +13,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 
 class UserTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    // use RefreshDatabase, WithFaker;
 
     //user registration
 
