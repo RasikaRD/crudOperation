@@ -50,6 +50,9 @@ Route::delete('/remove/{todo}', [TodoController::class, 'destroy'])->middleware(
 
 Route::get('/register', [RegisterController::class,'register'])->middleware('guest');
 Route::post('/singup', [RegisterController::class,'store'])->middleware('guest');
+Route::get('/email',[RegisterController::class, 'email']);
+Route::get('/profile',[RegisterController::class, 'view'])->middleware('auth');
+
 
 
 //log in/log out
@@ -62,3 +65,5 @@ Route::post('/logout', [SessionController::class, 'destroy'])->middleware('auth'
 
 Route::get('/admin/todos', [AdminController::class, 'add'])->middleware('admin');
 Route::post('/admin/todos/add', [AdminController::class, 'post'])->middleware('admin');
+
+Route::get('/admin/notification/{notificationId}', [AdminController::class, 'get'])->middleware('admin');

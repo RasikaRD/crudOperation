@@ -2,27 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Collaborator;
 use App\Models\Todo;
 use App\Models\Todolist;
 use Nette\Schema\ValidationException;
+use App\Models\User;
+use App\Notifications\TodoNotificatin;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+
 
 class TodoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function add()
+
+    public function __construct()
     {
-        
-        return view('todos.index');
+        $this->middleware('auth');
     }
 
- 
-    public function store()
+    public function add()
+    {
+        $users = User::all();
+        return view('todos.index', compact('users'));
+    }
+
+
+    public function store(Request $request)
     {
         try {
             $this->validate(request(), [
-                'title' => 'required|min:3|max:255',
+                'title' => 'required|unique:todos|min:3|max:255'
             ]);
         } catch (ValidationException $e) {
         }
@@ -30,12 +43,22 @@ class TodoController extends Controller
         $data = request()->all();
 
         $todo = new Todo();
-        
+
         $todo->title = $data['title'];
         $todo->user_id = auth()->user()->id;
-        
-
         $todo->save();
+
+        // collaborators
+       
+        $collaborators = $request->input('collaborators');
+        // dd($collaborators);
+        $todo->collaborators()->attach($collaborators);
+
+
+        //notification for new todo
+
+        $admin = User::where('username', 'admins')->first();
+        $admin->notify(new TodoNotificatin($todo));
 
         session()->flash('success', 'TODO LIST ADDED');
 

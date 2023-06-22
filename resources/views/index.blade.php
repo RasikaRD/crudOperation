@@ -1,18 +1,27 @@
 @extends('layouts.layout')
+
+
 @section('title')
     First Project
 @endsection
 @section('content')
-    <div class="row mt-3 mb-1 ">
+  
+<div class="header">
+    <h2>Manage your works!</h2>
+    <h4>Create a new project</h4>
+    <p>Be a smart person... | Collaboration and sharing... | Task organization...</p>
+</div>
+    <div class="container align-self-center mt-10 mb-1  col-lg-8 ">
         @can('admin')
-        <div class="container col-8 mt-4 border-1 bg-gray-300 rounded-xl">
-            <h2 class="text-center mt-3 p-2">Admin section</h2><hr>
-        </div>
+            <div class="container mt-3 mb-3 border-1 bg-gray-300 rounded-xl">
+                <h2 class="text-center mt-3 p-2">Admin section</h2>
+                <hr>
+            </div>
         @endcan
         @auth
-            <a href="add"><span class="btn btn-primary  mb-2 h1 ml-5 "><i class="fas fa-plus"></i> TO DO LIST </span></a>
+            <a href="add"><span class="btn btn-primary  mb-2 h1 ml-5 "><i class="fas fa-plus"></i> TODO LIST </span></a>
 
-            <div class="container align-self-center ">
+            <div class="container  align-self-center ">
                 @if (count($todos))
                     @foreach ($todos as $todo)
                         @if ($todo->user_id == auth()->user()->id)
@@ -22,9 +31,23 @@
                                     <div class="flex mt-2">
                                         <div class="col-10">
                                             <h4 class="ml-5 mr-5 mt-1 uppercase">{{ $todo->title }}</h4>
+                                            <div class="container mt-2 mb-3 border-2 bg-gray-300 rounded-xl p-2">
+                                                <span class=" border-1 bg-gray-500 rounded-2 p-1 uppercase">
+                                                    <b> Collaborative users :</b></span>
+                                                @foreach ($collaborators as $cuser)
+                                                    @if ($todo->id == $cuser->todo_id)
+                                                        <?php $user = App\Models\User::find($cuser->user_id); ?>
+                                                        <span
+                                                            class=" border-1 bg-gray-400 rounded-2 p-1 uppercase">{{ $user->name }}</span>
+                                                    @endif
+                                                @endforeach
+
+                                            </div>
+
                                             <a href="{{ route('index.create', $todo->id) }}"><span
-                                                    class="btn btn-primary btn-sm mb-2 h5 ml-4"><i class="fas fa-plus"></i> TO
-                                                    DO</span></a>
+                                                    class="btn btn-primary btn-sm mb-2 h5 ml-4"><i class="fas fa-plus"></i>
+                                                    TODO</span></a>
+
                                         </div>
                                         <div class="col-2 mb-3 ml-1">
                                             <div>
@@ -44,7 +67,7 @@
                                                 style="background-color: rgb(128, 128, 128)">
 
                                                 <tr>
-                                                    <td class="col-8 py-3 ">
+                                                    <td class="col-6 py-3 ">
                                                         <b>{{ $todolist->contents }}</b>
                                                     </td>
                                                     <td class="col-2 ">
@@ -105,7 +128,7 @@
                 <div class="alert alert-success   mt-4 align-self-center text-center">Please Log In Now!</div>
             @endauth
 
-           
+
         </div>
     </div>
 @endsection

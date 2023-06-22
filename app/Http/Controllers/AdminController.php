@@ -9,7 +9,9 @@ use Nette\Schema\ValidationException;
 use Kyslik\ColumnSortable\Sortable;
 
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Notifications\DatabaseNotification;
 
 class AdminController extends Controller
 {
@@ -47,5 +49,24 @@ class AdminController extends Controller
 
         return redirect('/');
 
+    }
+
+    public function get($notificationId){
+
+        $admin = User::where('username', 'admins');
+     
+        // $notification = $admin->unreadNotifications->first();
+        // $notification->markAsRead();
+        // dd($notificationId);
+        
+        $notification = DatabaseNotification::findOrFail($notificationId);
+        if ($notificationId == $notification->id) {
+            $notification->markAsRead();
+            // dd( $notification->id);
+        }
+
+        $users = User::latest()->get();
+        return view('todos.admin', compact('users'));
+        // return redirect()->back();
     }
 }
