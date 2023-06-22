@@ -5,7 +5,7 @@
 @section('content')
     @auth
    
-        <div class="container  align-self-center">
+        <div class="container  col-lg-6  col-sm-12 align-self-center">
             <form action="/create/store" method="post" class="mt-4 p-4">
                 @csrf
                 <div class="form-group m-3">
@@ -18,10 +18,11 @@
                         <p class="text-red-400 text-xs mt-1"> {{ $message }}</p>
                     @enderror
                 </div>
+                <div class="form-group m-3">
+                    <input type="submit" class="btn btn-primary float-end" value="Submit">
+                </div>
         </div>
-        <div class="form-group m-3">
-            <input type="submit" class="btn btn-primary float-end" value="Submit">
-        </div>
+
         </form>
         </div>
         

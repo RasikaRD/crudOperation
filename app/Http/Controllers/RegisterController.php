@@ -21,14 +21,13 @@ class RegisterController extends Controller
         return view('registers.register');
     }
 
-    public function store(Request
-     $request)
+    public function store(Request $request)
     {
         $attributes = request()->validate([
             'password' => 'required|min:7|max:15',
             'name' => 'required|max:256',
             'username' => 'required|min:3|max:255|unique:users,username',
-            'email' => 'required|email|max:255|unique:users,email'
+            'email' => 'required|email|unique:users,email'
         ]);
 
         $attributes['password'] = bcrypt($attributes['password']);
@@ -36,8 +35,6 @@ class RegisterController extends Controller
         $user = User::create($attributes);
 
         Mail::to($request->user())->send(new NewUserWelcomeMail($user));
-        // Mail::to('rasikarajith994@gmail.com')->send(new NewUserWelcomeMail($user));
-        // Mail::to('rasikarajith994@gmail.com')->send(new approvedtMail($user));
 
         auth()->login($user);
 
@@ -47,5 +44,9 @@ class RegisterController extends Controller
     public function email()
     {
         return view('emails.welcome_email');
+    }
+    public function view(){
+        $user = auth()->user();
+        return view('auth.profile', compact('user'));
     }
 }

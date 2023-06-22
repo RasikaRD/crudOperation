@@ -51,6 +51,8 @@ Route::delete('/remove/{todo}', [TodoController::class, 'destroy'])->middleware(
 Route::get('/register', [RegisterController::class,'register'])->middleware('guest');
 Route::post('/singup', [RegisterController::class,'store'])->middleware('guest');
 Route::get('/email',[RegisterController::class, 'email']);
+Route::get('/profile',[RegisterController::class, 'view'])->middleware('auth');
+
 
 
 //log in/log out

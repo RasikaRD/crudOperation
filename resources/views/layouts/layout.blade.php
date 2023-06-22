@@ -15,13 +15,27 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
-    {{-- Scripts --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- MDBootstrap -->
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- MDB -->
+
+
+    {{-- pusher cdn --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"
         integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
         integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous">
     </script>
+
+
+    {{-- Realtime notification --}}
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @vite('resources/js/app.js')
@@ -29,6 +43,23 @@
         window.Laravel = {!! json_encode([
             'csrfToken' => ('csrf_token')(),
         ]) !!};
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('nav ul li').hover(function() {
+                $(this).find('ul').stop().slideDown();
+            }, function() {
+                $(this).find('ul').stop().slideUp();
+            });
+        });
+
+        // Initialize the hamburger menu toggle
+        $(document).ready(function() {
+            $('.navbar-toggler').click(function() {
+                $(this).toggleClass('collapsed');
+                $('.navbar-collapse').toggleClass('show');
+            });
+        });
     </script>
 
     @can('admin')
@@ -41,84 +72,46 @@
 
 <body>
 
-    <nav class="navbar navbar-light bg-dark">
-        <div class="container mb-0 h1 align-self-center">
-            <a href="/"><span class="btn btn-secondary  mb-2 ml-2"> HOME</span></a>
-            <div class="flex align-self-center">
-                @auth
-                    {{-- <span class="text-gray-100 text-base font-bold uppercase py-3 px-5 ml-3">
-                        <i class="fa fa-user-circle" aria-hidden="true"></i> {{ auth()->user()->name }}</span> --}}
+    @extends('layouts.navbar')
 
-                    @can('admin')
-                        <!-- Notifications -->
-                        <div class="dropdown" id="app">
-                            <button class="btn btn-secondary dropdown-toggle  mb-1 mr-2 " type="button"
-                                id="dropdownMenuButton2" data-bs-toggle="dropdown" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <i class="fas fa-bell"></i>
-                                {{-- @if (count(auth()->user()->unreadNotifications) == 0)
-                                    <span class="badge rounded-pill badge-notification bg-danger ml-1 " id="count"></span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2" 
-                            id="notificationArea">
-                                <li><a class="dropdown-item" href="#" id="notification">No notifications!</a>
-                                </li>
-                                @endif --}}
-                                
-                                <span class="badge rounded-pill badge-notification bg-danger ml-1 "
-                                    id="count">{{ count(auth()->user()->unreadNotifications) }}</span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2"
-                                id="notificationArea">
+    @extends('layouts.oldnavbar')
 
-                                @if (count(auth()->user()->unreadNotifications) > 0)
-                                    @foreach (auth()->user()->unreadNotifications as $notification)
-                                        <li><a class="dropdown-item" href="/admin/notification/{{ $notification->id }}"
-                                                id="notification">
-                                                "{{ $notification->data['message'] }}"
-                                                added by {{ $notification->data['username'] }}
-
-                                            </a></li>
-                                    @endforeach
-                                @else
-                                    {{-- <li><a class="dropdown-item" id="notification">No notifications!</a></li> --}}
-                            </ul>
-                            @endif
-                        </div>
-                    @endcan
-
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle mb-1" type="button" id="dropdownMenuButton1"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-user-circle" aria-hidden="true"></i> {{ auth()->user()->name }}
-                        </button>
-                        @can('admin')
-                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="/admin/todos">Admin</a></li>
-                            </ul>
-                        @endcan
-                    </div>
-
-                    <form action="/logout" method="POST">
-                        @csrf
-                        <button type="submit" class="btn btn-info  mb-2 ml-2">LOG OUT</button>
-                    </form>
-                @else
-                    <a href="/register"><span class="btn btn-primary  mb-2 ml-2">REGISTER</span></a>
-                    <a href="/login"><span class="btn btn-info  mb-2 ml-2">LOG IN</span></a>
-                @endauth
-            </div>
-        </div>
-    </nav>
-    <div class="container w-75 align-self-center">
+    <div class="container1 col-12 align-self-center">
         @if (session()->has('success'))
-            <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 3000)" x-show="show"
+            <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 2000)" x-show="show"
                 class="alert alert-success w-45 mt-3 align-self-center">
                 {{ session()->get('success') }}
             </div>
         @endif
         @yield('content')
     </div>
+
+    {{-- sticky-bar --}}
+    <script>
+        window.addEventListener('scroll', function() {
+
+            var stickyBar = document.getElementById('sticky-bar');
+            if (!stickyBar.classList.contains('stick')) {
+                stickyBar.style.display = 'block';
+                window.removeEventListener('scroll', arguments.callee);
+            }
+        });
+
+        function toggleStickClass() {
+
+            var stickyBar = document.getElementById('sticky-bar');
+            console.log('toggleStickClass called');
+            if (window.pageYOffset > 1) {
+                stickyBar.classList.add('stick');
+                console.log('stick class added');
+            } else {
+                stickyBar.classList.remove('stick');
+                console.log('stick class removed');
+            }
+        }
+
+        window.addEventListener('scroll', toggleStickClass);
+    </script>
 
     {{-- script for notification --}}
     @can('admin')
